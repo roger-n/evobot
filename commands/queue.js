@@ -8,8 +8,8 @@ module.exports = {
   description: i18n.__("queue.description"),
   async execute(message) {
     const permissions = message.channel.permissionsFor(message.client.user);
-    if (!permissions.has(["MANAGE_MESSAGES", "ADD_REACTIONS"]))
-      return message.reply(i18n.__("queue.missingPermissionMessage"));
+    // if (!permissions.has(["MANAGE_MESSAGES", "ADD_REACTIONS"]))
+    //   return message.reply(i18n.__("queue.missingPermissionMessage"));
 
     const queue = message.client.queue.get(message.guild.id);
     if (!queue) return message.channel.send(i18n.__("queue.errorNotQueue"));
