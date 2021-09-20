@@ -134,8 +134,8 @@ module.exports = {
       const queueEmbed = new MessageEmbed()
         .setTitle("Queued")
         .setDescription(`${song.title} [${song.url}]`)
-        .setColor("#F8AA2A")
-        .setTimestamp();
+        .setColor("#B5D8F7");
+      // .setTimestamp();
 
       return serverQueue.textChannel.send(queueEmbed);
 

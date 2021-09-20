@@ -26,7 +26,7 @@ module.exports = {
 
     try {
       await queueEmbed.react("⬅️");
-      await queueEmbed.react("⏹");
+      // await queueEmbed.react("⏹");
       await queueEmbed.react("➡️");
     } catch (error) {
       console.error(error);
@@ -87,11 +87,11 @@ function generateQueueEmbed(message, queue) {
     const embed = new MessageEmbed()
       .setTitle(i18n.__("queue.embedTitle"))
       .setThumbnail(message.guild.iconURL())
-      .setColor("#F8AA2A")
+      .setColor("#B5D8F7")
       .setDescription(
         i18n.__mf("queue.embedCurrentSong", { title: queue[0].title, url: queue[0].url, info: info })
-      )
-      .setTimestamp();
+      );
+    // .setTimestamp();
     embeds.push(embed);
   }
 

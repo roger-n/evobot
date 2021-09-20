@@ -85,19 +85,19 @@ module.exports = {
     let playEmbed = new MessageEmbed()
       .setTitle("🎵  Started Playing")
       .setDescription(`${song.title} [${song.url}]`)
-      .setColor("#F8AA2A")
-      .setTimestamp();
+      .setColor("#B5D8F7");
+    // .setTimestamp();
 
     const playEmbedSent = await queue.textChannel.send(playEmbed);
 
     try {
       await playEmbedSent.react("⏭");
       await playEmbedSent.react("⏯");
-      await playEmbedSent.react("🔇");
-      await playEmbedSent.react("🔉");
-      await playEmbedSent.react("🔊");
-      await playEmbedSent.react("🔁");
-      await playEmbedSent.react("⏹");
+      // await playEmbedSent.react("🔇");
+      // await playEmbedSent.react("🔉");
+      // await playEmbedSent.react("🔊");
+      // await playEmbedSent.react("🔁");
+      // await playEmbedSent.react("⏹");
     } catch (error) {
       console.error(error);
     }
