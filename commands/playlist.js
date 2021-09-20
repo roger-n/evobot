@@ -2,8 +2,10 @@ const i18n = require("../util/i18n");
 const { MessageEmbed } = require("discord.js");
 const { play } = require("../include/play");
 const YouTubeAPI = require("simple-youtube-api");
-const scdl = require("soundcloud-downloader").default;
-const { YOUTUBE_API_KEY, SOUNDCLOUD_CLIENT_ID, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME } = require("../util/Util");
+const { getTracks, getData } = require("spotify-url-info");
+const ytsr = require("ytsr");
+
+const { YOUTUBE_API_KEY, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME } = require("../util/Util");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 
 module.exports = {
@@ -31,9 +33,11 @@ module.exports = {
         .catch(console.error);
 
     const search = args.join(" ");
-    const pattern = /^.*(youtu.be\/|list=)([^#\&\?]*).*/gi;
+    const youtubePattern = /^.*(youtu.be\/|list=)([^#\&\?]*).*/gi;
+    const spotifyPattern = /^.*(https:\/\/open\.spotify\.com\/playlist\/)([^#\&\?]*).*/;
     const url = args[0];
-    const urlValid = pattern.test(args[0]);
+    const urlValidYoutube = youtubePattern.test(args[0]);
+    const urlValidSpotify = spotifyPattern.test(args[0]);
 
     const queueConstruct = {
       textChannel: message.channel,
@@ -49,7 +53,7 @@ module.exports = {
     let playlist = null;
     let videos = [];
 
-    if (urlValid) {
+    if (urlValidYoutube) {
       try {
         playlist = await youtube.getPlaylist(url, { part: "snippet" });
         videos = await playlist.getVideos(MAX_PLAYLIST_SIZE || 10, { part: "snippet" });
@@ -57,15 +61,36 @@ module.exports = {
         console.error(error);
         return message.reply(i18n.__("playlist.errorNotFoundPlaylist")).catch(console.error);
       }
-    } else if (scdl.isValidUrl(args[0])) {
-      if (args[0].includes("/sets/")) {
-        message.channel.send(i18n.__("playlist.fetchingPlaylist"));
-        playlist = await scdl.getSetInfo(args[0], SOUNDCLOUD_CLIENT_ID);
-        videos = playlist.tracks.map((track) => ({
-          title: track.title,
-          url: track.permalink_url,
-          duration: track.duration / 1000
-        }));
+    } else if (urlValidSpotify) {
+      try {
+        const playlistData = await getData(args[0]);
+
+        playlist = {
+          title: playlistData.name,
+          url: args[0]
+        };
+
+        const tracks = await getTracks(args[0]);
+
+        if (tracks.length > MAX_PLAYLIST_SIZE) {
+          tracks.length = MAX_PLAYLIST_SIZE;
+        }
+
+        const spotifySongs = await Promise.all(
+          tracks.map(async (t) => {
+            const res = (await ytsr(`${t.name} - ${t.artists[0].name || ""}`, { limit: 1 })).items[0];
+            return {
+              title: res.title,
+              url: res.url,
+              duration: res.duration,
+              thumbnail: res.thumbnails ? res.thumbnails[0] : undefined
+            };
+          })
+        );
+        videos = spotifySongs.filter((s) => s.title || s.duration);
+      } catch (error) {
+        console.error(error);
+        return message.reply(i18n.__("playlist.errorNotFoundPlaylist")).catch(console.error);
       }
     } else {
       try {
@@ -92,7 +117,7 @@ module.exports = {
 
     let playlistEmbed = new MessageEmbed()
       .setTitle(`${playlist.title}`)
-      .setDescription(newSongs.map((song, index) => `${index + 1}. ${song.title}`))
+      .setDescription(`${message.author} queued ${newSongs.length} songs.`)
       .setURL(playlist.url)
       .setColor("#F8AA2A")
       .setTimestamp();
@@ -101,7 +126,7 @@ module.exports = {
       playlistEmbed.description =
         playlistEmbed.description.substr(0, 2007) + i18n.__("playlist.playlistCharLimit");
 
-    message.channel.send(i18n.__mf("playlist.startedPlaylist", { author: message.author }), playlistEmbed);
+    message.channel.send(playlistEmbed);
 
     if (!serverQueue) {
       message.client.queue.set(message.guild.id, queueConstruct);

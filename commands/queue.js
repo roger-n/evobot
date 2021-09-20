@@ -8,6 +8,8 @@ module.exports = {
   description: i18n.__("queue.description"),
   async execute(message) {
     const permissions = message.channel.permissionsFor(message.client.user);
+
+    // Queue command should not require user permissions for
     // if (!permissions.has(["MANAGE_MESSAGES", "ADD_REACTIONS"]))
     //   return message.reply(i18n.__("queue.missingPermissionMessage"));
 
@@ -57,10 +59,15 @@ module.exports = {
           collector.stop();
           reaction.message.reactions.removeAll();
         }
+        // If bot lacks role to manage members' emotes, error 50013 thrown (handled below)
         await reaction.users.remove(message.author.id);
       } catch (error) {
-        console.error(error);
-        return message.channel.send(error.message).catch(console.error);
+        if (error.code === 50013) {
+          console.log("Bot missing permissions to remove members' emotes");
+        } else {
+          console.error(error);
+          return message.channel.send(error.message).catch(console.error);
+        }
       }
     });
   }
