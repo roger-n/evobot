@@ -9,7 +9,8 @@ const { getPreview } = require("spotify-url-info");
 
 const {
   YOUTUBE_API_KEY,
-  DEFAULT_VOLUME
+  DEFAULT_VOLUME,
+  EMBED_COLOR
   // SPOTIFY_CLIENT_ID,
   // SPOTIFY_SECRET_ID,
 } = require("../util/Util");
@@ -134,7 +135,7 @@ module.exports = {
       const queueEmbed = new MessageEmbed()
         .setTitle("Queued")
         .setDescription(`${song.title} [${song.url}]`)
-        .setColor("#B5D8F7");
+        .setColor(EMBED_COLOR);
       // .setTimestamp();
 
       return serverQueue.textChannel.send(queueEmbed);

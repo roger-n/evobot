@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const YouTubeAPI = require("simple-youtube-api");
-const { YOUTUBE_API_KEY } = require("../util/Util");
+const { YOUTUBE_API_KEY, EMBED_COLOR } = require("../util/Util");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const i18n = require("../util/i18n");
 
@@ -21,7 +21,7 @@ module.exports = {
     let resultsEmbed = new MessageEmbed()
       .setTitle(i18n.__("search.resultEmbedTtile"))
       .setDescription(i18n.__mf("search.resultEmbedDesc", { search: search }))
-      .setColor("#B5D8F7");
+      .setColor(EMBED_COLOR);
 
     try {
       const results = await youtube.searchVideos(search, 10);

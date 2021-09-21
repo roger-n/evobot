@@ -1,6 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const lyricsFinder = require("lyrics-finder");
 const i18n = require("../util/i18n");
+const { EMBED_COLOR } = require("../util/Util");
 
 module.exports = {
   name: "lyrics",
@@ -22,7 +23,7 @@ module.exports = {
     let lyricsEmbed = new MessageEmbed()
       .setTitle(i18n.__mf("lyrics.embedTitle", { title: title }))
       .setDescription(lyrics)
-      .setColor("#B5D8F7");
+      .setColor(EMBED_COLOR);
     // .setTimestamp();
 
     if (lyricsEmbed.description.length >= 2048)
