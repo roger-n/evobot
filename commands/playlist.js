@@ -5,7 +5,7 @@ const YouTubeAPI = require("simple-youtube-api");
 const { getTracks, getData } = require("spotify-url-info");
 const ytsr = require("ytsr");
 
-const { YOUTUBE_API_KEY, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME } = require("../util/Util");
+const { YOUTUBE_API_KEY, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME, EMBED_COLOR } = require("../util/Util");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 
 module.exports = {
@@ -119,8 +119,8 @@ module.exports = {
       .setTitle(`${playlist.title}`)
       .setDescription(`${message.author} queued ${newSongs.length} songs.`)
       .setURL(playlist.url)
-      .setColor("#F8AA2A")
-      .setTimestamp();
+      .setColor(EMBED_COLOR);
+    // .setTimestamp();
 
     if (playlistEmbed.description.length >= 2048)
       playlistEmbed.description =

@@ -1,5 +1,5 @@
 const ytdl = require("ytdl-core-discord");
-const { canModifyQueue, STAY_TIME } = require("../util/Util");
+const { canModifyQueue, STAY_TIME, EMBED_COLOR } = require("../util/Util");
 const i18n = require("../util/i18n");
 const { MessageEmbed } = require("discord.js");
 
@@ -85,19 +85,19 @@ module.exports = {
     let playEmbed = new MessageEmbed()
       .setTitle("🎵  Started Playing")
       .setDescription(`${song.title} [${song.url}]`)
-      .setColor("#F8AA2A")
-      .setTimestamp();
+      .setColor(EMBED_COLOR);
+    // .setTimestamp();
 
     const playEmbedSent = await queue.textChannel.send(playEmbed);
 
     try {
       await playEmbedSent.react("⏭");
       await playEmbedSent.react("⏯");
-      await playEmbedSent.react("🔇");
-      await playEmbedSent.react("🔉");
-      await playEmbedSent.react("🔊");
-      await playEmbedSent.react("🔁");
-      await playEmbedSent.react("⏹");
+      // await playEmbedSent.react("🔇");
+      // await playEmbedSent.react("🔉");
+      // await playEmbedSent.react("🔊");
+      // await playEmbedSent.react("🔁");
+      // await playEmbedSent.react("⏹");
     } catch (error) {
       console.error(error);
     }
