@@ -7,21 +7,9 @@ const { MessageEmbed } = require("discord.js");
 
 const { getPreview } = require("spotify-url-info");
 
-const {
-  YOUTUBE_API_KEY,
-  DEFAULT_VOLUME,
-  EMBED_COLOR
-  // SPOTIFY_CLIENT_ID,
-  // SPOTIFY_SECRET_ID,
-} = require("../util/Util");
+const { YOUTUBE_API_KEY, DEFAULT_VOLUME, EMBED_COLOR } = require("../util/Util");
 
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
-
-// const Spotify = require("node-spotify-api");
-// const spotify = new Spotify({
-//   id: SPOTIFY_CLIENT_ID,
-//   secret: SPOTIFY_SECRET_ID
-// });
 
 module.exports = {
   name: "play",
@@ -136,13 +124,8 @@ module.exports = {
         .setTitle("Queued")
         .setDescription(`${song.title} [${song.url}]`)
         .setColor(EMBED_COLOR);
-      // .setTimestamp();
 
       return serverQueue.textChannel.send(queueEmbed);
-
-      // return serverQueue.textChannel
-      //   .send(i18n.__mf("play.queueAdded", { title: song.title, author: message.author }))
-      //   .catch(console.error);
     }
 
     queueConstruct.songs.push(song);

@@ -24,7 +24,6 @@ module.exports = {
       .setTitle(i18n.__mf("lyrics.embedTitle", { title: title }))
       .setDescription(lyrics)
       .setColor(EMBED_COLOR);
-    // .setTimestamp();
 
     if (lyricsEmbed.description.length >= 2048)
       lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;

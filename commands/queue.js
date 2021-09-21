@@ -10,10 +10,6 @@ module.exports = {
   async execute(message) {
     const permissions = message.channel.permissionsFor(message.client.user);
 
-    // Queue command should not require user permissions for
-    // if (!permissions.has(["MANAGE_MESSAGES", "ADD_REACTIONS"]))
-    //   return message.reply(i18n.__("queue.missingPermissionMessage"));
-
     const queue = message.client.queue.get(message.guild.id);
     if (!queue) return message.channel.send(i18n.__("queue.errorNotQueue"));
 
@@ -92,7 +88,6 @@ function generateQueueEmbed(message, queue) {
       .setDescription(
         i18n.__mf("queue.embedCurrentSong", { title: queue[0].title, url: queue[0].url, info: info })
       );
-    // .setTimestamp();
     embeds.push(embed);
   }
 

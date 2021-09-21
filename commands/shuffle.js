@@ -22,7 +22,5 @@ module.exports = {
     } catch (error) {
       console.log(error);
     }
-
-    // queue.textChannel.send(i18n.__mf("shuffle.result", { author: message.author })).catch(console.error);
   }
 };

@@ -86,7 +86,6 @@ module.exports = {
       .setTitle("🎵  Started Playing")
       .setDescription(`${song.title} [${song.url}]`)
       .setColor(EMBED_COLOR);
-    // .setTimestamp();
 
     const playEmbedSent = await queue.textChannel.send(playEmbed);
 

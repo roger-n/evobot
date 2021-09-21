@@ -120,7 +120,6 @@ module.exports = {
       .setDescription(`${message.author} queued ${newSongs.length} songs.`)
       .setURL(playlist.url)
       .setColor(EMBED_COLOR);
-    // .setTimestamp();
 
     if (playlistEmbed.description.length >= 2048)
       playlistEmbed.description =
