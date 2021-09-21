@@ -36,9 +36,5 @@ module.exports = {
     } catch (error) {
       console.log(error);
     }
-
-    // queue.textChannel
-    //   .send(i18n.__mf("skipto.result", { author: message.author, arg: args[0] - 1 }))
-    //   .catch(console.error);
   }
 };
