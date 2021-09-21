@@ -1,30 +1,31 @@
-![Node build](https://github.com/eritislami/evobot/actions/workflows/node.yml/badge.svg)
-![Docker build](https://github.com/eritislami/evobot/actions/workflows/docker.yml/badge.svg)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+# Ganyu Music (Discord Music Bot)
+> Ganyu Music is a Discord Music bot built on top of [EvoBot](https://github.com/eritislami/evobot)
 
-![logo](https://repository-images.githubusercontent.com/186841818/8aa95700-7730-11e9-84be-e80f28520325)
+> Credit goes to EvoBot and its contributors for all initial functionality.
 
-# 🤖 EvoBot (Discord Music Bot)
-> EvoBot is a Discord Music Bot built with discord.js & uses Command Handler from [discordjs.guide](https://discordjs.guide)
+> Ganyu Music was forked off of Evobot on September 18, 2021 at commit 48e33a4. 
+
+> Ganyu Music and EvoBot are built with discord.js & use Command Handler from [discordjs.guide](https://discordjs.guide)
+
+> This README is a modified version of EvoBot's.
 
 ## Requirements
 
 1. Discord Bot Token **[Guide](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot)**
 2. YouTube Data API v3 Key **[Guide](https://developers.google.com/youtube/v3/getting-started)**  
-2.1 **(Optional)** Soundcloud Client ID **[Guide](https://github.com/zackradisic/node-soundcloud-downloader#client-id)**
 3. Node.js v14.0.0 or newer
 
-## 🚀 Getting Started
+## Getting Started
 
 ```sh
-git clone https://github.com/eritislami/evobot.git
+git clone https://github.com/roger-n/evobot/tree/ganyu-mains
 cd evobot
 npm install
 ```
 
-After installation finishes follow configuration instructions then run `node index.js` to start the bot.
+After installation finishes follow configuration instructions then run `npm start` to start the bot.
 
-## ⚙️ Configuration
+## Configuration
 
 Copy or Rename `config.json.example` to `config.json` and fill out the values:
 
@@ -34,55 +35,33 @@ Copy or Rename `config.json.example` to `config.json` and fill out the values:
 {
   "TOKEN": "",
   "YOUTUBE_API_KEY": "",
-  "SOUNDCLOUD_CLIENT_ID": "",
-  "MAX_PLAYLIST_SIZE": 10,
+  "MAX_PLAYLIST_SIZE": 500,
   "PREFIX": "/",
   "PRUNING": false,
   "LOCALE": "en",
   "DEFAULT_VOLUME": 100,
-  "STAY_TIME": 30
+  "STAY_TIME": 500
 }
 ```
 
-## 🐬 Docker Configuration
-
-For those who would prefer to use our [Docker container](https://hub.docker.com/repository/docker/eritislami/evobot), you may provide values from `config.json` as environment variables.
-
-```shell
-docker run -e "TOKEN=<discord-token>" -e "YOUTUBE_API_KEY=<youtube-key>" eritislami/evobot
-```
-
-## 📝 Features & Commands
+## Features & Commands
 
 > Note: The default prefix is '/'
 
-* 🎶 Play music from YouTube via url
+`/play <arg0>`
 
-`/play https://www.youtube.com/watch?v=GLvohMXgcBo`
+* arg0: YouTube video, YouTube playlist, Spotify track, or Spotify playlist link
 
-* 🔎 Play music from YouTube via search query
+`/search <arg0>`
 
-`/play under the bridge red hot chili peppers`
+* arg0: search query for YouTube
 
-* 🎶 Play music from Soundcloud via url
+`/playlist <arg0>`
 
-`/play https://soundcloud.com/blackhorsebrigade/pearl-jam-alive`
+* arg0: YouTube playlist link, Spotify playlist link, or YouTube playlist search query
 
-* 🔎 Search and select music to play
+Other commands
 
-`/search Pearl Jam`
-
-Reply with song number or numbers seperated by comma that you wish to play
-
-Examples: `1` or `1,2,3`
-
-* 📃 Play youtube playlists via url
-
-`/playlist https://www.youtube.com/watch?v=YlUKcNNmywk&list=PL5RNCwK3GIO13SR_o57bGJCEmqFAwq82c`
-
-* 🔎 Play youtube playlists via search query
-
-`/playlist linkin park meteora`
 * Now Playing (/np)
 * Queue system (/queue, /q)
 * Loop / Repeat (/loop)
@@ -104,42 +83,6 @@ Examples: `1` or `1,2,3`
 * Command Handler from [discordjs.guide](https://discordjs.guide/)
 * Media Controls via Reactions
 
-![reactions](https://i.imgur.com/9S7Omf9.png)
+## Credits
 
-## 🌎 Locales
-
-Currently available locales are:
-- English (en)
-- Arabic (ar)
-- Brazilian Portuguese (pt_br)
-- Dutch (nl)
-- French (fr)
-- German (de)
-- Italian (it)
-- Japanese (ja)
-- Korean (ko)
-- Polish (pl)
-- Russian (ru)
-- Simplified Chinese (zh_cn)
-- Singaporean Mandarin (zh_sg)
-- Spanish (es)
-- Swedish (sv)
-- Traditional Chinese (zh_tw)
-- Thai (th)
-- Turkish (tr)
-- Vietnamese (vi)
-- Check [Contributing](#-contributing) if you wish to help add more languages!
-
-## 🤝 Contributing
-
-1. [Fork the repository](https://github.com/eritislami/evobot/fork)
-2. Clone your fork: `git clone https://github.com/your-username/evobot.git`
-3. Create your feature branch: `git checkout -b my-new-feature`
-4. Stage changes `git add .`
-5. Commit your changes: `cz` OR `npm run commit` do not use `git commit`
-6. Push to the branch: `git push origin my-new-feature`
-7. Submit a pull request
-
-## 📝 Credits
-
-[@iCrawl](https://github.com/iCrawl) For the queue system used in this application which was adapted from [@iCrawl/discord-music-bot](https://github.com/iCrawl/discord-music-bot)
+[Eritislami and all of EvoBot's contributors](https://github.com/eritislami/evobot/graphs/contributors) For the original music bot this project was forked from [@eritislami/evobot](https://github.com/eritislami/evobot)

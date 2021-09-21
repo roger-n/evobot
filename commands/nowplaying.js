@@ -1,6 +1,7 @@
 const { splitBar } = require("string-progressbar");
 const { MessageEmbed } = require("discord.js");
 const i18n = require("../util/i18n");
+const { EMBED_COLOR } = require("../util/Util");
 
 module.exports = {
   name: "np",
@@ -16,7 +17,7 @@ module.exports = {
     let nowPlaying = new MessageEmbed()
       .setTitle(i18n.__("nowplaying.embedTitle"))
       .setDescription(`${song.title}\n${song.url}`)
-      .setColor("#B5D8F7");
+      .setColor(EMBED_COLOR);
     // .setAuthor(message.client.user.username);
 
     if (song.duration > 0) {
