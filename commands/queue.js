@@ -16,10 +16,7 @@ module.exports = {
     let currentPage = 0;
     const embeds = generateQueueEmbed(message, queue.songs);
 
-    const queueEmbed = await message.channel.send(
-      `**${i18n.__mf("queue.currentPage")} ${currentPage + 1}/${embeds.length}**`,
-      embeds[currentPage]
-    );
+    const queueEmbed = await message.channel.send("", embeds[currentPage]);
 
     try {
       await queueEmbed.react("⬅️");
@@ -39,18 +36,12 @@ module.exports = {
         if (reaction.emoji.name === "➡️") {
           if (currentPage < embeds.length - 1) {
             currentPage++;
-            queueEmbed.edit(
-              i18n.__mf("queue.currentPage", { page: currentPage + 1, length: embeds.length }),
-              embeds[currentPage]
-            );
+            queueEmbed.edit("", embeds[currentPage]);
           }
         } else if (reaction.emoji.name === "⬅️") {
           if (currentPage !== 0) {
             --currentPage;
-            queueEmbed.edit(
-              i18n.__mf("queue.currentPage", { page: currentPage + 1, length: embeds.length }),
-              embeds[currentPage]
-            );
+            queueEmbed.edit("", embeds[currentPage]);
           }
         } else {
           collector.stop();
@@ -79,7 +70,11 @@ function generateQueueEmbed(message, queue) {
     let j = i;
     k += 10;
 
-    const info = current.map((track) => `${++j} - [${track.title}](${track.url})`).join("\n");
+    const info = [
+      `Queue length: ${queue.length}\nPage: ${Math.round(i / 10) + 1}/${Math.ceil(queue.length / 10)}\n`
+    ]
+      .concat(current.map((track) => `${++j} - [${track.title}](${track.url})`))
+      .join("\n");
 
     const embed = new MessageEmbed()
       .setTitle(i18n.__("queue.embedTitle"))

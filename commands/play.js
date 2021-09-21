@@ -90,7 +90,7 @@ module.exports = {
         song = {
           title: res.title,
           url: res.url,
-          duration: res.duration
+          duration: songInfo.videoDetails.lengthSeconds
         };
       } catch (error) {
         console.error(error);
@@ -122,7 +122,7 @@ module.exports = {
 
       const queueEmbed = new MessageEmbed()
         .setTitle("Queued")
-        .setDescription(`${song.title} [${song.url}]`)
+        .setDescription(`[${song.title}](${song.url})\nPosition: ${serverQueue.songs.length}`)
         .setColor(EMBED_COLOR);
 
       return serverQueue.textChannel.send(queueEmbed);
