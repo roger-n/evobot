@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const i18n = require("../util/i18n");
+const { EMBED_COLOR } = require("../util/Util");
 
 module.exports = {
   name: "queue",
@@ -8,8 +9,6 @@ module.exports = {
   description: i18n.__("queue.description"),
   async execute(message) {
     const permissions = message.channel.permissionsFor(message.client.user);
-    // if (!permissions.has(["MANAGE_MESSAGES", "ADD_REACTIONS"]))
-    //   return message.reply(i18n.__("queue.missingPermissionMessage"));
 
     const queue = message.client.queue.get(message.guild.id);
     if (!queue) return message.channel.send(i18n.__("queue.errorNotQueue"));
@@ -24,7 +23,7 @@ module.exports = {
 
     try {
       await queueEmbed.react("⬅️");
-      await queueEmbed.react("⏹");
+      // await queueEmbed.react("⏹");
       await queueEmbed.react("➡️");
     } catch (error) {
       console.error(error);
@@ -57,10 +56,15 @@ module.exports = {
           collector.stop();
           reaction.message.reactions.removeAll();
         }
+        // If bot lacks role to manage members' emotes, error 50013 thrown (handled below)
         await reaction.users.remove(message.author.id);
       } catch (error) {
-        console.error(error);
-        return message.channel.send(error.message).catch(console.error);
+        if (error.code === 50013) {
+          console.log("Bot missing permissions to remove members' emotes");
+        } else {
+          console.error(error);
+          return message.channel.send(error.message).catch(console.error);
+        }
       }
     });
   }
@@ -80,11 +84,10 @@ function generateQueueEmbed(message, queue) {
     const embed = new MessageEmbed()
       .setTitle(i18n.__("queue.embedTitle"))
       .setThumbnail(message.guild.iconURL())
-      .setColor("#F8AA2A")
+      .setColor(EMBED_COLOR)
       .setDescription(
         i18n.__mf("queue.embedCurrentSong", { title: queue[0].title, url: queue[0].url, info: info })
-      )
-      .setTimestamp();
+      );
     embeds.push(embed);
   }
 

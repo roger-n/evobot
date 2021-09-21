@@ -1,10 +1,14 @@
 const i18n = require("../util/i18n");
 const { play } = require("../include/play");
 const ytdl = require("ytdl-core");
+const ytsr = require("ytsr");
 const YouTubeAPI = require("simple-youtube-api");
-const scdl = require("soundcloud-downloader").default;
-const https = require("https");
-const { YOUTUBE_API_KEY, SOUNDCLOUD_CLIENT_ID, DEFAULT_VOLUME } = require("../util/Util");
+const { MessageEmbed } = require("discord.js");
+
+const { getPreview } = require("spotify-url-info");
+
+const { YOUTUBE_API_KEY, DEFAULT_VOLUME, EMBED_COLOR } = require("../util/Util");
+
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 
 module.exports = {
@@ -34,34 +38,19 @@ module.exports = {
     if (!permissions.has("SPEAK")) return message.reply(i18n.__("play.missingPermissionSpeak"));
 
     const search = args.join(" ");
-    const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
-    const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
-    const scRegex = /^https?:\/\/(soundcloud\.com)\/(.*)$/;
-    const mobileScRegex = /^https?:\/\/(soundcloud\.app\.goo\.gl)\/(.*)$/;
+    const youtubePattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/;
+    const youtubePlaylistPattern = /^.*(list=)([^#\&\?]*).*/gi;
+    const spotifyPattern = /^.*(https:\/\/open\.spotify\.com\/)([^#\&\?]*).*/;
+    const spotifyPlaylistPattern = /^.*(https:\/\/open\.spotify\.com\/playlist\/)([^#\&\?]*).*/;
     const url = args[0];
-    const urlValid = videoPattern.test(args[0]);
+    const urlValidYoutube = youtubePattern.test(args[0]);
+    const urlValidSpotify = spotifyPattern.test(args[0]);
 
     // Start the playlist if playlist url was provided
-    if (!videoPattern.test(args[0]) && playlistPattern.test(args[0])) {
+    if (youtubePattern.test(args[0]) && youtubePlaylistPattern.test(args[0])) {
       return message.client.commands.get("playlist").execute(message, args);
-    } else if (scdl.isValidUrl(url) && url.includes("/sets/")) {
+    } else if (spotifyPlaylistPattern.test(args[0])) {
       return message.client.commands.get("playlist").execute(message, args);
-    }
-
-    if (mobileScRegex.test(url)) {
-      try {
-        https.get(url, function (res) {
-          if (res.statusCode == "302") {
-            return message.client.commands.get("play").execute(message, [res.headers.location]);
-          } else {
-            return message.reply(i18n.__("play.songNotFound")).catch(console.error);
-          }
-        });
-      } catch (error) {
-        console.error(error);
-        return message.reply(error.message).catch(console.error);
-      }
-      return message.reply("Following url redirection...").catch(console.error);
     }
 
     const queueConstruct = {
@@ -78,7 +67,7 @@ module.exports = {
     let songInfo = null;
     let song = null;
 
-    if (urlValid) {
+    if (urlValidYoutube) {
       try {
         songInfo = await ytdl.getInfo(url);
         song = {
@@ -90,13 +79,18 @@ module.exports = {
         console.error(error);
         return message.reply(error.message).catch(console.error);
       }
-    } else if (scRegex.test(url)) {
+    } else if (urlValidSpotify) {
       try {
-        const trackInfo = await scdl.getInfo(url, SOUNDCLOUD_CLIENT_ID);
+        const trackPreview = await getPreview(url);
+
+        const res = (await ytsr(`${trackPreview.title} - ${trackPreview.artist || ""}`, { limit: 1 }))
+          .items[0];
+
+        songInfo = await ytdl.getInfo(res.url);
         song = {
-          title: trackInfo.title,
-          url: trackInfo.permalink_url,
-          duration: Math.ceil(trackInfo.duration / 1000)
+          title: res.title,
+          url: res.url,
+          duration: res.duration
         };
       } catch (error) {
         console.error(error);
@@ -125,9 +119,13 @@ module.exports = {
 
     if (serverQueue) {
       serverQueue.songs.push(song);
-      return serverQueue.textChannel
-        .send(i18n.__mf("play.queueAdded", { title: song.title, author: message.author }))
-        .catch(console.error);
+
+      const queueEmbed = new MessageEmbed()
+        .setTitle("Queued")
+        .setDescription(`${song.title} [${song.url}]`)
+        .setColor(EMBED_COLOR);
+
+      return serverQueue.textChannel.send(queueEmbed);
     }
 
     queueConstruct.songs.push(song);

@@ -12,6 +12,11 @@ module.exports = {
 
     queue.playing = true;
     queue.connection.dispatcher.end();
-    queue.textChannel.send(i18n.__mf("skip.result", { author: message.author })).catch(console.error);
+
+    try {
+      message.react("👌");
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
