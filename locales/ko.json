@@ -129,7 +129,7 @@
     "errorNotQueue": "넘길 음악이 존재하지 않습니다.",
     "result": "<@{author}> ⏭ 음악을 넘겼습니다."
   },
-  "skipto": {
+  "jump": {
     "description": "설정한 대기열 번호까지 음악을 넘깁니다.",
     "usageReply": "사용 방법: {prefix}{name} <Queue Number>",
     "errorNotQueue": "대기열에 음악이 없습니다.",

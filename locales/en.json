@@ -129,7 +129,7 @@
     "errorNotQueue": "There is nothing playing that I could skip for you.",
     "result": "<@{author}> ⏭ skipped the song"
   },
-  "skipto": {
+  "jump": {
     "description": "Skip to the selected queue number",
     "usageReply": "Usage: {prefix}{name} <Queue Number>",
     "errorNotQueue": "There is no queue.",

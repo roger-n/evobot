@@ -129,7 +129,7 @@
     "errorNotQueue": "Không có bài hát nào đang phát nào.",
     "result": "<@{author}> ⏭ bỏ qua bài hát"
   },
-  "skipto": {
+  "jump": {
     "description": "Bỏ qua tất cả bài hát và phát bài hát ở vị trí đã chọn",
     "usageReply": "Cách sử dụng: {prefix}{name} <số thứ tự bài hát trong hàng đợi>",
     "errorNotQueue": "Không có bài hát nào trong hàng đợi.",

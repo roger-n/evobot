@@ -129,7 +129,7 @@
     "errorNotQueue": "Es wird gerade nichts gespielt that I could skip for you.",
     "result": "<@{author}> ⏭ hat den Song übersprungen"
   },
-  "skipto": {
+  "jump": {
     "description": "Überspringe eine ausgewählte Menge von Songs",
     "usageReply": "Nutzung: {prefix}{name} <Queue Number>",
     "errorNotQueue": "Es gibt keine Queue.",

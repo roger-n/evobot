@@ -1,9 +1,10 @@
 # Ganyu Music (Discord Music Bot)
+
 > Ganyu Music is a Discord Music bot built on top of [EvoBot](https://github.com/eritislami/evobot)
 
 > Credit goes to EvoBot and its contributors for all initial functionality.
 
-> Ganyu Music was forked off of Evobot on September 18, 2021 at commit 48e33a4. 
+> Ganyu Music was forked off of Evobot on September 18, 2021 at commit 48e33a4.
 
 > Ganyu Music and EvoBot are built with discord.js & use Command Handler from [discordjs.guide](https://discordjs.guide)
 
@@ -12,7 +13,7 @@
 ## Requirements
 
 1. Discord Bot Token **[Guide](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot)**
-2. YouTube Data API v3 Key **[Guide](https://developers.google.com/youtube/v3/getting-started)**  
+2. YouTube Data API v3 Key **[Guide](https://developers.google.com/youtube/v3/getting-started)**
 3. Node.js v14.0.0 or newer
 
 ## Getting Started
@@ -50,38 +51,38 @@ Copy or Rename `config.json.example` to `config.json` and fill out the values:
 
 `/play <arg0>`
 
-* arg0: YouTube video, YouTube playlist, Spotify track, or Spotify playlist link
+- arg0: YouTube video, YouTube playlist, Spotify track, or Spotify playlist link
 
 `/search <arg0>`
 
-* arg0: search query for YouTube
+- arg0: search query for YouTube
 
 `/playlist <arg0>`
 
-* arg0: YouTube playlist link, Spotify playlist link, or YouTube playlist search query
+- arg0: YouTube playlist link, Spotify playlist link, or YouTube playlist search query
 
 Other commands
 
-* Now Playing (/np)
-* Queue system (/queue, /q)
-* Loop / Repeat (/loop)
-* Shuffle (/shuffle)
-* Volume control (/volume, /v)
-* Lyrics (/lyrics, /ly)
-* Pause (/pause)
-* Resume (/resume, /r)
-* Skip (/skip, /s)
-* Skip to song # in queue (/skipto, /st)
-* Move a song in the queue (/move, /mv)
-* Remove song # from queue (/remove, /rm)
-* Play an mp3 clip (/clip song.mp3) (put the file in sounds folder)
-* List all clips (/clips)
-* Show ping to Discord API (/ping)
-* Show bot uptime (/uptime)
-* Toggle pruning of bot messages (/pruning)
-* Help (/help, /h)
-* Command Handler from [discordjs.guide](https://discordjs.guide/)
-* Media Controls via Reactions
+- Now Playing (/np)
+- Queue system (/queue, /q)
+- Loop / Repeat (/loop)
+- Shuffle (/shuffle)
+- Volume control (/volume, /v)
+- Lyrics (/lyrics, /ly)
+- Pause (/pause)
+- Resume (/resume, /r)
+- Skip (/skip, /s)
+- Skip to song # in queue (/jump, /st)
+- Move a song in the queue (/move, /mv)
+- Remove song # from queue (/remove, /rm)
+- Play an mp3 clip (/clip song.mp3) (put the file in sounds folder)
+- List all clips (/clips)
+- Show ping to Discord API (/ping)
+- Show bot uptime (/uptime)
+- Toggle pruning of bot messages (/pruning)
+- Help (/help, /h)
+- Command Handler from [discordjs.guide](https://discordjs.guide/)
+- Media Controls via Reactions
 
 ## Credits
 

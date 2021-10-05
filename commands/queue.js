@@ -11,12 +11,12 @@ module.exports = {
     const permissions = message.channel.permissionsFor(message.client.user);
 
     const queue = message.client.queue.get(message.guild.id);
-    if (!queue) return message.channel.send(i18n.__("queue.errorNotQueue"));
+    if (!queue) return message.channel.send("Queue is empty");
 
     let currentPage = 0;
     const embeds = generateQueueEmbed(message, queue.songs);
 
-    const queueEmbed = await message.channel.send("", embeds[currentPage]);
+    const queueEmbed = await message.channel.send(embeds[currentPage]);
 
     try {
       await queueEmbed.react("⬅️");
@@ -36,12 +36,12 @@ module.exports = {
         if (reaction.emoji.name === "➡️") {
           if (currentPage < embeds.length - 1) {
             currentPage++;
-            queueEmbed.edit("", embeds[currentPage]);
+            queueEmbed.edit(embeds[currentPage]);
           }
         } else if (reaction.emoji.name === "⬅️") {
           if (currentPage !== 0) {
             --currentPage;
-            queueEmbed.edit("", embeds[currentPage]);
+            queueEmbed.edit(embeds[currentPage]);
           }
         } else {
           collector.stop();
@@ -70,19 +70,16 @@ function generateQueueEmbed(message, queue) {
     let j = i;
     k += 10;
 
-    const info = [
-      `Queue length: ${queue.length}\nPage: ${Math.round(i / 10) + 1}/${Math.ceil(queue.length / 10)}\n`
-    ]
-      .concat(current.map((track) => `${++j} - [${track.title}](${track.url})`))
+    const remainingSongs = Math.max(queue.length - (i + 10), 0);
+
+    const info = current
+      .map((track, index) => `${++j}) ${track.title}${i === 0 && index === 0 ? " [current track]" : ""}`)
+      .concat([
+        k > queue.length ? "\n    This is the end of the queue!" : `\n    ${remainingSongs} more track(s)`
+      ])
       .join("\n");
 
-    const embed = new MessageEmbed()
-      .setTitle(i18n.__("queue.embedTitle"))
-      .setThumbnail(message.guild.iconURL())
-      .setColor(EMBED_COLOR)
-      .setDescription(
-        i18n.__mf("queue.embedCurrentSong", { title: queue[0].title, url: queue[0].url, info: info })
-      );
+    const embed = `\`\`\`elm\n${info}\`\`\``;
     embeds.push(embed);
   }
 

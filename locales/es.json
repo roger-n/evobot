@@ -129,7 +129,7 @@
     "errorNotQueue": "No se está reproduciendo nada que pueda saltar para ti.",
     "result": "<@{author}> ⏭ Saltó la música"
   },
-  "skipto": {
+  "jump": {
     "description": "Salta a la posición seleccionada en la cola",
     "usageReply": "Cómo usarlo: {prefix}{name} <Número en la Cola>",
     "errorNotQueue": "No hay una cola de reproduccón.",

@@ -129,7 +129,7 @@
     "errorNotQueue": "现在没有任何歌曲正在播放",
     "result": "<@{author}> ⏭ 跳过了歌曲"
   },
-  "skipto": {
+  "jump": {
     "description": "跳到指定的歌曲",
     "usageReply": "用法: {prefix}{name} <歌曲队列编号>",
     "errorNotQueue": "现在没有任何歌曲正在播放",

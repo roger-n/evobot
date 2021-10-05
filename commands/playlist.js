@@ -93,7 +93,6 @@ module.exports = {
         });
 
         videos = parsedSongs.filter((s) => s.title || s.duration);
-        console.log(videos.length);
       } catch (error) {
         console.error(error);
         return message.reply(i18n.__("playlist.errorNotFoundPlaylist")).catch(console.error);
@@ -122,9 +121,7 @@ module.exports = {
     serverQueue ? serverQueue.songs.push(...newSongs) : queueConstruct.songs.push(...newSongs);
 
     let playlistEmbed = new MessageEmbed()
-      .setTitle(`${playlist.title}`)
-      .setDescription(`${message.author} queued ${newSongs.length} songs.`)
-      .setURL(playlist.url)
+      .setDescription(`Queued **${newSongs.length}** tracks`)
       .setColor(EMBED_COLOR);
 
     if (playlistEmbed.description.length >= 2048)

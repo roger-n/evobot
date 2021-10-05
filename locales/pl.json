@@ -129,7 +129,7 @@
     "errorNotQueue": "Nie mam czego pominąć.",
     "result": "<@{author}> ⏭ pominął utwór"
   },
-  "skipto": {
+  "jump": {
     "description": "Przewiń do wybranego numeru w kolejce",
     "SkładniaReply": "Składnia: {prefix}{name} <Numer w kolejce>",
     "errorNotQueue": "Nie ma kolejki na tym serwerze.",

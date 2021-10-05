@@ -1,5 +1,7 @@
 const { canModifyQueue } = require("../util/Util");
 const i18n = require("../util/i18n");
+const { MessageEmbed } = require("discord.js");
+const { EMBED_COLOR } = require("../util/Util");
 
 module.exports = {
   name: "loop",
@@ -7,13 +9,18 @@ module.exports = {
   description: i18n.__("loop.description"),
   execute(message) {
     const queue = message.client.queue.get(message.guild.id);
-    if (!queue) return message.reply(i18n.__("loop.errorNotQueue")).catch(console.error);
-    if (!canModifyQueue(message.member)) return i18n.__("common.errorNotChannel");
 
-    // toggle from false to true and reverse
-    queue.loop = !queue.loop;
-    return queue.textChannel
-      .send(i18n.__mf("loop.result", { loop: queue.loop ? i18n.__("common.on") : i18n.__("common.off") }))
-      .catch(console.error);
+    const loopEmbed = new MessageEmbed().setColor(EMBED_COLOR);
+
+    if (!queue) {
+      loopEmbed.setDescription("Queue is empty");
+    } else if (!canModifyQueue(message.member)) {
+      loopEmbed.setDescription("User must be in the voice channel");
+    } else {
+      queue.loop = !queue.loop;
+      loopEmbed.setDescription(queue.loop ? "Now looping the **queue**" : "Looping is now **disabled**");
+    }
+
+    return message.channel.send(loopEmbed);
   }
 };

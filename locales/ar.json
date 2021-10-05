@@ -129,7 +129,7 @@
     "errorNotQueue": "لا يوجد أي شيء يمكنني تخطيه من أجلك.",
     "result": "<@{author}> تخطى الأغنية ⏭"
   },
-  "skipto": {
+  "jump": {
     "description": "تخطي إلى الرقم المحدد",
     "usageReply": "استعمال: {prefix}{name} <رقم>",
     "errorNotQueue": "لا توجد قائمة حاليًا",
