@@ -2,14 +2,18 @@ const i18n = require("../util/i18n");
 const { play } = require("../include/play");
 const ytdl = require("ytdl-core");
 const ytsr = require("ytsr");
-const YouTubeAPI = require("simple-youtube-api");
+// const YouTubeAPI = require("simple-youtube-api");
 const { MessageEmbed } = require("discord.js");
 
 const { getPreview } = require("spotify-url-info");
 
-const { YOUTUBE_API_KEY, DEFAULT_VOLUME, EMBED_COLOR } = require("../util/Util");
+const {
+  // YOUTUBE_API_KEY,
+  DEFAULT_VOLUME,
+  EMBED_COLOR
+} = require("../util/Util");
 
-const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
+// const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 
 module.exports = {
   name: "play",
@@ -90,7 +94,7 @@ module.exports = {
         song = {
           title: res.title,
           url: res.url,
-          duration: res.duration
+          duration: songInfo.videoDetails.lengthSeconds
         };
       } catch (error) {
         console.error(error);
@@ -98,18 +102,23 @@ module.exports = {
       }
     } else {
       try {
-        const results = await youtube.searchVideos(search, 1, { part: "id" });
+        const validatedSearch = search.replace("&", "");
 
-        if (!results.length) {
+        const t = Date.now();
+        const youtubeSearch = await ytsr(validatedSearch, { limit: 1 });
+        console.log(`YTSR Response time: ${(Date.now() - t) / 1000} seconds`);
+        const singleVideoResult = youtubeSearch.items[0];
+
+        if (!singleVideoResult || singleVideoResult.type !== "video") {
           message.reply(i18n.__("play.songNotFound")).catch(console.error);
           return;
         }
 
-        songInfo = await ytdl.getInfo(results[0].url);
         song = {
-          title: songInfo.videoDetails.title,
-          url: songInfo.videoDetails.video_url,
-          duration: songInfo.videoDetails.lengthSeconds
+          title: singleVideoResult.title,
+          url: singleVideoResult.url,
+          duration: singleVideoResult.duration,
+          thumbnail: singleVideoResult.thumbnails ? singleVideoResult.thumbnails[0] : undefined
         };
       } catch (error) {
         console.error(error);
@@ -122,7 +131,7 @@ module.exports = {
 
       const queueEmbed = new MessageEmbed()
         .setTitle("Queued")
-        .setDescription(`${song.title} [${song.url}]`)
+        .setDescription(`[${song.title}](${song.url})\nPosition: ${serverQueue.songs.length}`)
         .setColor(EMBED_COLOR);
 
       return serverQueue.textChannel.send(queueEmbed);

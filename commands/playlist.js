@@ -76,18 +76,24 @@ module.exports = {
           tracks.length = MAX_PLAYLIST_SIZE;
         }
 
-        const spotifySongs = await Promise.all(
-          tracks.map(async (t) => {
-            const res = (await ytsr(`${t.name} - ${t.artists[0].name || ""}`, { limit: 1 })).items[0];
-            return {
-              title: res.title,
-              url: res.url,
-              duration: res.duration,
-              thumbnail: res.thumbnails ? res.thumbnails[0] : undefined
-            };
-          })
+        const spotifyToYoutube = await Promise.all(
+          tracks.map((t) => ytsr(`${t.name} - ${t.artists[0].name || ""}`, { limit: 1 }))
         );
-        videos = spotifySongs.filter((s) => s.title || s.duration);
+
+        const videoYoutubeResults = spotifyToYoutube.filter((s) => s.items[0].type === "video");
+
+        const parsedSongs = videoYoutubeResults.map((r) => {
+          const song = r.items[0];
+          return {
+            title: song.title,
+            url: song.url,
+            duration: song.duration,
+            thumbnail: song.thumbnails ? song.thumbnails[0] : undefined
+          };
+        });
+
+        videos = parsedSongs.filter((s) => s.title || s.duration);
+        console.log(videos.length);
       } catch (error) {
         console.error(error);
         return message.reply(i18n.__("playlist.errorNotFoundPlaylist")).catch(console.error);

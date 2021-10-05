@@ -12,6 +12,11 @@ module.exports = {
 
     queue.songs = [];
     queue.connection.dispatcher.end();
-    queue.textChannel.send(i18n.__mf("stop.result", { author: message.author })).catch(console.error);
+
+    try {
+      message.react("☑");
+    } catch (error) {
+      console.log(error);
+    }
   }
 };

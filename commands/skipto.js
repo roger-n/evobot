@@ -32,7 +32,7 @@ module.exports = {
     queue.connection.dispatcher.end();
 
     try {
-      message.react("👌");
+      message.react("☑");
     } catch (error) {
       console.log(error);
     }
