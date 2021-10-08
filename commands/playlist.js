@@ -2,7 +2,8 @@ const i18n = require("../util/i18n");
 const { MessageEmbed } = require("discord.js");
 const { play } = require("../include/play");
 const YouTubeAPI = require("simple-youtube-api");
-const { getTracks, getData } = require("spotify-url-info");
+// const { getTracks, getData } = require("spotify-url-info");
+const { getTracks, getData } = require("../wrappers/spotify");
 const ytsr = require("ytsr");
 
 const { YOUTUBE_API_KEY, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME, EMBED_COLOR } = require("../util/Util");
@@ -71,6 +72,7 @@ module.exports = {
         };
 
         const tracks = await getTracks(args[0]);
+        // const tracks = await getAllTracksPlaylist(args[0]);
 
         if (tracks.length > MAX_PLAYLIST_SIZE) {
           tracks.length = MAX_PLAYLIST_SIZE;

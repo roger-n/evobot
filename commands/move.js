@@ -19,6 +19,8 @@ module.exports = {
       moveEmbed.setDescription("Queue is empty");
     } else if (!canModifyQueue(message.member)) {
       moveEmbed.setDescription("User must be in the voice channel");
+    } else if (!isNaN(args[0]) && args[0] > queue.songs.length) {
+      moveEmbed.setDescription("Song index is out of bounds");
     } else if (args.length && !(isNaN(args[0]) || args[0] <= 1)) {
       let song = queue.songs[args[0] - 1];
 

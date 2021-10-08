@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 const { EMBED_COLOR } = require("../util/Util");
 const i18n = require("../util/i18n");
 
-const pattern = /^[0-9]{1,2}(\s*,\s*[0-9]{1,2})*$/;
+const pattern = /^[0-9]*(\s*,\s*[0-9]*)*$/;
 
 module.exports = {
   name: "remove",

@@ -3,7 +3,7 @@ const i18n = require("../util/i18n");
 
 module.exports = {
   name: "jump",
-  aliases: ["st"],
+  aliases: ["j"],
   description: i18n.__("jump.description"),
   execute(message, args) {
     if (!args.length || isNaN(args[0]))

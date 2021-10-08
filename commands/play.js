@@ -5,7 +5,7 @@ const ytsr = require("ytsr");
 // const YouTubeAPI = require("simple-youtube-api");
 const { MessageEmbed } = require("discord.js");
 
-const { getPreview } = require("spotify-url-info");
+const { getPreview } = require("../wrappers/spotify");
 
 const {
   // YOUTUBE_API_KEY,
