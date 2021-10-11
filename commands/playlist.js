@@ -3,11 +3,17 @@ const { MessageEmbed } = require("discord.js");
 const { play } = require("../include/play");
 const YouTubeAPI = require("simple-youtube-api");
 // const { getTracks, getData } = require("spotify-url-info");
-const { getTracks, getData } = require("../wrappers/spotify");
+const { getData } = require("spotify-url-info");
 const ytsr = require("ytsr");
 
-const { YOUTUBE_API_KEY, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME, EMBED_COLOR } = require("../util/Util");
+const { YOUTUBE_API_KEY, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME, EMBED_COLOR, SPOTIFY_CLIENT_ID, SPOTIFY_SECRET_ID } = require("../util/Util");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
+
+var SpotifyWebApi = require('spotify-web-api-node');
+var spotifyApi = new SpotifyWebApi({
+  clientId: SPOTIFY_CLIENT_ID,
+  clientSecret: SPOTIFY_SECRET_ID,
+});
 
 module.exports = {
   name: "playlist",
@@ -64,22 +70,44 @@ module.exports = {
       }
     } else if (urlValidSpotify) {
       try {
+
+        const credentialsResponse = await spotifyApi.clientCredentialsGrant()
+        const spotifyAccessToken = credentialsResponse.body['access_token']
+        spotifyApi.setAccessToken(spotifyAccessToken);
+
         const playlistData = await getData(args[0]);
 
         playlist = {
           title: playlistData.name,
-          url: args[0]
+          url: args[0],
+          id: playlistData.id
         };
 
-        const tracks = await getTracks(args[0]);
-        // const tracks = await getAllTracksPlaylist(args[0]);
+        let aggregateTracks = [];
+        let next = undefined;
+        let page = 0;
 
-        if (tracks.length > MAX_PLAYLIST_SIZE) {
-          tracks.length = MAX_PLAYLIST_SIZE;
+        const paginationAmount = 50;
+
+        do {
+          const playlistResponse = await spotifyApi.getPlaylistTracks(playlistData.id, {
+            offset: 0 + paginationAmount * page,
+            limit: paginationAmount
+          });
+
+          const playlistBody = playlistResponse.body
+
+          aggregateTracks = aggregateTracks.concat(playlistBody.items);
+          next = playlistBody.next;
+          page += 1
+        } while (next);
+
+        if (aggregateTracks.length > MAX_PLAYLIST_SIZE) {
+          aggregateTracks.length = MAX_PLAYLIST_SIZE;
         }
 
         const spotifyToYoutube = await Promise.all(
-          tracks.map((t) => ytsr(`${t.name} - ${t.artists[0].name || ""}`, { limit: 1 }))
+          aggregateTracks.map((t, i) => ytsr(`${t.track.name} - ${t.track.artists[0].name || ""}`, { limit: 1 }))
         );
 
         const videoYoutubeResults = spotifyToYoutube.filter((s) => s.items[0].type === "video");

@@ -17,3 +17,5 @@ exports.STAY_TIME = (config ? config.STAY_TIME : process.env.STAY_TIME) || 30;
 exports.DEFAULT_VOLUME = (config ? config.DEFAULT_VOLUME : process.env.DEFAULT_VOLUME) || 100;
 exports.LOCALE = (config ? config.LOCALE : process.env.LOCALE) || "en";
 exports.EMBED_COLOR = (config ? config.EMBED_COLOR : process.env.EMBED_COLOR) || "#B5D8F7";
+exports.SPOTIFY_CLIENT_ID = config ? config.SPOTIFY_CLIENT_ID : process.env.SPOTIFY_CLIENT_ID;
+exports.SPOTIFY_SECRET_ID = config ? config.SPOTIFY_SECRET_ID : process.env.SPOTIFY_SECRET_ID;
