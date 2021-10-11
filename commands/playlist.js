@@ -54,7 +54,8 @@ module.exports = {
       loop: false,
       volume: DEFAULT_VOLUME,
       muted: false,
-      playing: true
+      playing: true,
+      lastPlayMessage: undefined
     };
 
     let playlist = null;

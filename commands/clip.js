@@ -19,7 +19,8 @@ module.exports = {
       loop: false,
       volume: 100,
       muted: false,
-      playing: true
+      playing: true,
+      lastPlayMessage: undefined
     };
 
     message.client.queue.set(message.guild.id, queueConstruct);
