@@ -107,7 +107,8 @@ module.exports = {
         }
 
         const spotifyToYoutube = await Promise.all(
-          aggregateTracks.map((t, i) => ytsr(`${t.track.name} - ${t.track.artists[0].name || ""}`, { limit: 1 }))
+          aggregateTracks.filter(t => t.track && t.track.name)
+            .map((t, i) => ytsr(`${t.track.name} - ${t.track.artists[0].name || ""}`, { limit: 1 }))
         );
 
         const videoYoutubeResults = spotifyToYoutube.filter((s) => s.items[0].type === "video");
