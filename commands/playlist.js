@@ -71,6 +71,13 @@ module.exports = {
     } else if (urlValidSpotify) {
       try {
 
+        let playlistEmbed = new MessageEmbed()
+          .setDescription('Currently testing new Spotify playlist architecture to support 100+ track playlists.  ' +
+            'Playlists over 200 songs long may take longer than 5 seconds to fully queue.  Current playlist max length set to 500.')
+          .setColor(EMBED_COLOR);
+
+        message.channel.send(playlistEmbed);
+
         const credentialsResponse = await spotifyApi.clientCredentialsGrant()
         const spotifyAccessToken = credentialsResponse.body['access_token']
         spotifyApi.setAccessToken(spotifyAccessToken);
