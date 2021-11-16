@@ -129,7 +129,7 @@
     "errorNotQueue": "Er is niks aan het afspelen dat ik kan overslaan.",
     "result": "<@{author}> ⏭ Sloeg het huidige nummer over"
   },
-  "skipto": {
+  "jump": {
     "description": "Ga naar het geselecteerde wachtrijnummer",
     "usageReply": "Gebruik: {prefix}{name} <Wachtrij Nummer>",
     "errorNotQueue": "Er is geen wachtrij.",

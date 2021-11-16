@@ -129,7 +129,7 @@
     "errorNotQueue": "Non c'è niente che io possa saltare per te.",
     "result": "<@{author}> ⏭ ha saltato il brano"
   },
-  "skipto": {
+  "jump": {
     "description": "Passa al numero di coda selezionato",
     "usageReply": "Utilizzo: {prefix}{name} <Numero in Coda>",
     "errorNotQueue": "Non c'è nessuna coda attiva.",

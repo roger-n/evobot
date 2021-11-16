@@ -123,7 +123,7 @@
     "errorNotQueue": "Il n'y a rien que je pourrais skip pour vous.",
     "result": "<@{author}> ⏭ skip la musique"
   },
-  "skipto": {
+  "jump": {
     "description": "Passer au numéro de file d'attente sélectionné",
     "usageReply": "Utilisation: {prefix}{name} <Nombre dans la file d'attente>",
     "errorNotQueue": "Il n'y a pas de file d'attente.",

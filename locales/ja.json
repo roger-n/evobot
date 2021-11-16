@@ -129,7 +129,7 @@
     "errorNotQueue": "スキップする曲がありません",
     "result": "<@{author}> が ⏭ スキップしました"
   },
-  "skipto": {
+  "jump": {
     "description": "指定した番号の曲をスキップ",
     "usageReply": "使い方: {prefix}{name} <Queue Number>",
     "errorNotQueue": "キューに何も入っていません",

@@ -83,11 +83,18 @@ module.exports = {
     dispatcher.setVolumeLogarithmic(queue.volume / 100);
 
     let playEmbed = new MessageEmbed()
-      .setTitle("🎵  Started Playing")
+      .setTitle("Now playing")
       .setDescription(`[${song.title}](${song.url})`)
       .setColor(EMBED_COLOR);
 
+      
+    try {
+      queue.lastPlayMessage.delete()
+    } catch (e) {
+      console.log(e)
+    }
     const playEmbedSent = await queue.textChannel.send(playEmbed);
+    queue.lastPlayMessage = playEmbedSent;
 
     try {
       await playEmbedSent.react("⏭");

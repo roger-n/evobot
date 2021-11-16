@@ -60,3 +60,4 @@ typings/
 
 # Temp ignore 
 config.json
+package-lock.json

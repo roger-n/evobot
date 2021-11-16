@@ -65,7 +65,8 @@ module.exports = {
       loop: false,
       volume: DEFAULT_VOLUME,
       muted: false,
-      playing: true
+      playing: true,
+      lastPlayMessage: undefined
     };
 
     let songInfo = null;
@@ -130,8 +131,9 @@ module.exports = {
       serverQueue.songs.push(song);
 
       const queueEmbed = new MessageEmbed()
-        .setTitle("Queued")
-        .setDescription(`[${song.title}](${song.url})\nPosition: ${serverQueue.songs.length}`)
+        .setDescription(
+          `Queued [${song.title}](${song.url}) [${message.author}] - ${serverQueue.songs.length}`
+        )
         .setColor(EMBED_COLOR);
 
       return serverQueue.textChannel.send(queueEmbed);
