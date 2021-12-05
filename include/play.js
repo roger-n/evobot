@@ -214,7 +214,11 @@ module.exports = {
     collector.on("end", () => {
       playEmbedSent.reactions.removeAll().catch(catchReactPermissionsError);
       if (PRUNING && playEmbedSent && !playEmbedSent.deleted) {
-        playingMessage.delete({ timeout: 3000 }).catch(console.error);
+        try {
+		playingMessage.delete({ timeout: 3000 }).catch(console.error);
+	} catch (e) {
+	
+	}
       }
     });
   }
