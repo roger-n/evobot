@@ -6,13 +6,20 @@ const YouTubeAPI = require("simple-youtube-api");
 const { getData } = require("spotify-url-info");
 const ytsr = require("ytsr");
 
-const { YOUTUBE_API_KEY, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME, EMBED_COLOR, SPOTIFY_CLIENT_ID, SPOTIFY_SECRET_ID } = require("../util/Util");
+const {
+  YOUTUBE_API_KEY,
+  MAX_PLAYLIST_SIZE,
+  DEFAULT_VOLUME,
+  EMBED_COLOR,
+  SPOTIFY_CLIENT_ID,
+  SPOTIFY_SECRET_ID
+} = require("../util/Util");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 
-var SpotifyWebApi = require('spotify-web-api-node');
+var SpotifyWebApi = require("spotify-web-api-node");
 var spotifyApi = new SpotifyWebApi({
   clientId: SPOTIFY_CLIENT_ID,
-  clientSecret: SPOTIFY_SECRET_ID,
+  clientSecret: SPOTIFY_SECRET_ID
 });
 
 module.exports = {
@@ -71,16 +78,17 @@ module.exports = {
       }
     } else if (urlValidSpotify) {
       try {
-
         let playlistEmbed = new MessageEmbed()
-          .setDescription('Currently testing new Spotify playlist architecture to support 100+ track playlists.  ' +
-            'Playlists over 200 songs long may take longer than 5 seconds to fully queue.  Current playlist max length set to 500.')
+          .setDescription(
+            "Currently testing new Spotify playlist architecture to support 100+ track playlists.  " +
+              "Playlists over 200 songs long may take longer than 5 seconds to fully queue.  Current playlist max length set to 500."
+          )
           .setColor(EMBED_COLOR);
 
         message.channel.send(playlistEmbed);
 
-        const credentialsResponse = await spotifyApi.clientCredentialsGrant()
-        const spotifyAccessToken = credentialsResponse.body['access_token']
+        const credentialsResponse = await spotifyApi.clientCredentialsGrant();
+        const spotifyAccessToken = credentialsResponse.body["access_token"];
         spotifyApi.setAccessToken(spotifyAccessToken);
 
         const playlistData = await getData(args[0]);
@@ -103,21 +111,22 @@ module.exports = {
             limit: paginationAmount
           });
 
-          const playlistBody = playlistResponse.body
+          const playlistBody = playlistResponse.body;
 
           aggregateTracks = aggregateTracks.concat(playlistBody.items);
           next = playlistBody.next;
-          page += 1
+          page += 1;
         } while (next);
 
         if (aggregateTracks.length > MAX_PLAYLIST_SIZE) {
           aggregateTracks.length = MAX_PLAYLIST_SIZE;
         }
 
-        const spotifyToYoutube = await Promise.all(
-          aggregateTracks.filter(t => t.track && t.track.name)
-            .map((t, i) => ytsr(`${t.track.name} - ${t.track.artists[0].name || ""}`, { limit: 1 }))
+        const filteredTracks = aggregateTracks.filter((t) => t.track && t.track.name);
+        const tracksPromises = filteredTracks.map((t, i) =>
+          ytsr(`${t.track.name} - ${t.track.artists[0].name || ""}`, { limit: 1 })
         );
+        const spotifyToYoutube = await Promise.all(tracksPromises);
 
         const videoYoutubeResults = spotifyToYoutube.filter((s) => s.items[0].type === "video");
 
